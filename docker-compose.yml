@@ -1,0 +1,8 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        APP_VERSION: local
+    ports:
+      - "8080:8080"
