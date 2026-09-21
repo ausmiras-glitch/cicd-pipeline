@@ -4,6 +4,8 @@
 
 push code, it tests itself, builds itself, ships itself. that's it.
 
+live: https://w4ykkr7f5sj25quucysndbnxku0fwbtg.lambda-url.eu-central-1.on.aws/
+
 ```
 push ─┬─► lint ──┐
       └─► tests ─┴─► docker build + smoke test ─┬─► ghcr.io          (main)
@@ -19,7 +21,7 @@ push ─┬─► lint ──┐
 - **infra/bootstrap.yml**: CloudFormation for ECR + IAM. GitHub talks to AWS over OIDC, so there are no keys in secrets
 - **scripts/deploy_lambda.sh**: creates or updates the function, gives it a public URL
 
-the aws deploy stays skipped until it's set up. see [docs/aws-setup.md](docs/aws-setup.md).
+aws is wired up (frankfurt, lambda + ecr, oidc). setup notes: [docs/aws-setup.md](docs/aws-setup.md).
 
 ## run it
 
