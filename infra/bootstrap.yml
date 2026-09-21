@@ -81,10 +81,16 @@ Resources:
             Action: sts:AssumeRoleWithWebIdentity
             Condition:
               StringEquals:
-                # Matched on individual claims: GitHub's "sub" format is not stable.
                 token.actions.githubusercontent.com:aud: sts.amazonaws.com
                 token.actions.githubusercontent.com:repository: !Sub ${GitHubOwner}/${GitHubRepo}
                 token.actions.githubusercontent.com:environment: production
+              StringLike:
+                # IAM requires a "sub" condition. GitHub now embeds numeric owner
+                # and repo ids in it, so both shapes are allowed here; the exact
+                # repository and environment are pinned by StringEquals above.
+                token.actions.githubusercontent.com:sub:
+                  - !Sub repo:${GitHubOwner}/${GitHubRepo}:environment:production
+                  - !Sub repo:${GitHubOwner}@*/${GitHubRepo}@*:environment:production
       Policies:
         - PolicyName: deploy
           PolicyDocument:
