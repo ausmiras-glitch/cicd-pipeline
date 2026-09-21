@@ -87,7 +87,7 @@ jobs:
   publish:
     name: Publish image to GHCR
     needs: docker
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -120,7 +120,7 @@ jobs:
     name: Deploy to AWS Lambda
     needs: docker
     # Runs only on main, and only once AWS is configured (see docs/aws-setup.md).
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.AWS_ROLE_ARN != ''
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.AWS_ROLE_ARN != ''
     runs-on: ubuntu-latest
     environment:
       name: production
